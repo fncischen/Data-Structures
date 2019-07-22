@@ -44,44 +44,67 @@ class DoublyLinkedList:
     return self.length
 
   def add_to_head(self, value):
-    self.head.insert_before(value)
-    self.head = self.head.prev
+    if self.head != None and self.tail != None:
+      next = self.head
+      self.head.insert_before(value)
+      self.head = self.head.prev
+      self.head.next = next 
+      self.length += 1
+    else: 
+      NewNode = ListNode(value)
+      self.head = NewNode
+      self.tail = NewNode 
+      self.length += 1
 
   def remove_from_head(self):
+    value = self.head.value 
     if self.head == self.tail:
       self.head.delete()
       self.tail.delete()
       self.head = None
       self.tail = None 
-      return self.head 
+      self.length -= 1 
+      return value
     else:
-      self.head = self.head.next
-      self.head.prev.delete()
-      return self.head 
+      self.head.delete()
+      self.length -= 1 
+      return value 
 
   def add_to_tail(self, value):
-    self.tail.insert_after(value)
-    self.tail = self.tail.next
+    if self.head != None and self.tail != None:
+      prev = self.tail 
+      self.tail.insert_after(value)
+      self.tail = self.tail.next
+      self.tail.prev = prev 
+      self.length += 1
+    else: 
+      NewTail = ListNode(value)
+      self.tail = NewTail
+      self.head = NewTail
+      self.length += 1
 
   def remove_from_tail(self):
+    value = self.tail.value
     if self.head == self.tail:
       self.head.delete()
       self.tail.delete()
       self.head = None
       self.tail = None 
-      return self.tail
+      self.length -= 1 
+      return value
     else: 
-      self.tail = self.tail.prev
-      self.tail.next.delete()
-      return self.tail 
+      self.tail.delete()
+      self.length -= 1
+      return value
 
   def move_to_front(self, node):
     # check and see if node is in the list
     currentSelectedNode = self.head
-    while currentSelectedNode != self.tail:
+    while currentSelectedNode != None:
       if currentSelectedNode == node:
         currentSelectedNode.delete()
-        self.add_to_head(node)
+        self.length -= 1 
+        self.add_to_head(node.value)
         return self.head.value
       else:
         currentSelectedNode = currentSelectedNode.next
@@ -91,10 +114,11 @@ class DoublyLinkedList:
 
   def move_to_end(self, node):
     currentSelectedNode = self.head
-    while currentSelectedNode != self.tail:
+    while currentSelectedNode != None:
       if currentSelectedNode == node:
         currentSelectedNode.delete()
-        self.add_to_tail(node)
+        self.length -= 1 
+        self.add_to_tail(node.value)
         return self.tail.value
       else:
         currentSelectedNode = currentSelectedNode.next
@@ -102,35 +126,38 @@ class DoublyLinkedList:
     print("We cannot find this node")
 
   def delete(self, node):
-    deleted = False
     currentSelectedNode = self.head
-    while currentSelectedNode != self.tail:
-      if currentSelectedNode == node:
+    while currentSelectedNode != None:
+      if currentSelectedNode == node: 
         currentSelectedNode.delete()
-        deleted = True 
-        return deleted
+        self.length -= 1
+        break 
       else:
         currentSelectedNode = currentSelectedNode.next
 
-    return deleted
 
   def get_max(self):
     max = self.head.value 
     currentSelectedNode = self.head
-    i = 0
     while currentSelectedNode != None:
       if currentSelectedNode.value > max:
         max = currentSelectedNode.value 
       else:
-        print("Move!")
         currentSelectedNode = currentSelectedNode.next
-      i += 1
-      print(i)
 
     return max 
+
+# 10 5 7
+# 10 7 5
 
 g = ListNode(5)
 e = DoublyLinkedList(g)
 e.add_to_tail(7)
-e.remove_from_head()
-print(e.get_max())
+e.add_to_head(10)
+e.move_to_end(g)
+
+print(e.head.value)
+print(e.head.next.value)
+print(e.tail.value)
+
+print(e.length)
