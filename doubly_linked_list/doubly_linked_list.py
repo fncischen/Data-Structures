@@ -45,19 +45,35 @@ class DoublyLinkedList:
 
   def add_to_head(self, value):
     self.head.insert_before(value)
+    self.head = self.head.prev
 
   def remove_from_head(self):
-    self.head = self.head.next
-    self.head.prev.delete()
-    return self.head 
+    if self.head == self.tail:
+      self.head.delete()
+      self.tail.delete()
+      self.head = None
+      self.tail = None 
+      return self.head 
+    else:
+      self.head = self.head.next
+      self.head.prev.delete()
+      return self.head 
 
   def add_to_tail(self, value):
     self.tail.insert_after(value)
+    self.tail = self.tail.next
 
   def remove_from_tail(self):
-   self.tail = self.tail.prev
-   self.tail.next.delete()
-   return self.tail 
+    if self.head == self.tail:
+      self.head.delete()
+      self.tail.delete()
+      self.head = None
+      self.tail = None 
+      return self.tail
+    else: 
+      self.tail = self.tail.prev
+      self.tail.next.delete()
+      return self.tail 
 
   def move_to_front(self, node):
     # check and see if node is in the list
@@ -101,10 +117,20 @@ class DoublyLinkedList:
   def get_max(self):
     max = self.head.value 
     currentSelectedNode = self.head
-    while currentSelectedNode != self.tail:
+    i = 0
+    while currentSelectedNode != None:
       if currentSelectedNode.value > max:
         max = currentSelectedNode.value 
       else:
+        print("Move!")
         currentSelectedNode = currentSelectedNode.next
+      i += 1
+      print(i)
 
     return max 
+
+g = ListNode(5)
+e = DoublyLinkedList(g)
+e.add_to_tail(7)
+e.remove_from_head()
+print(e.get_max())
