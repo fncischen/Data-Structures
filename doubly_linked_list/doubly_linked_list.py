@@ -80,7 +80,7 @@ class DoublyLinkedList:
     else: 
       NewTail = ListNode(value)
       self.tail = NewTail
-      self.head = NewTail
+      self.head = NewTail[]
       self.length += 1
 
   def remove_from_tail(self):
