@@ -69,7 +69,11 @@ class DoublyLinkedList:
       self.length -= 1 
       return value
     else:
+      next = self.head.next 
       self.head.delete()
+
+      #where my bug was // forgot to set a new head after an old head was removed.
+      self.head = next
       self.length -= 1 
       return value 
 
@@ -98,8 +102,11 @@ class DoublyLinkedList:
       self.tail = None 
       self.length -= 1 
       return value
-    else: 
+    else:
+      tail = self.tail.prev 
       self.tail.delete()
+      #where my bug was // forgot to set a new tail after an old tail was removed.
+      self.tail = tail 
       self.length -= 1
       return value
 
@@ -178,7 +185,7 @@ g = ListNode(5)
 e = DoublyLinkedList(g)
 e.add_to_tail(7)
 e.add_to_head(10)
-e.move_to_end(g)
+e.move_to_end(e.head.next)
 
 print(e.head.value)
 print(e.head.next.value)
