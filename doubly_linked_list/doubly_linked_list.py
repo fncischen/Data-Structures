@@ -57,6 +57,9 @@ class DoublyLinkedList:
       self.length += 1
 
   def remove_from_head(self):
+    if not self.head:
+      return None
+
     value = self.head.value 
     if self.head == self.tail:
       self.head.delete()
@@ -80,10 +83,13 @@ class DoublyLinkedList:
     else: 
       NewTail = ListNode(value)
       self.tail = NewTail
-      self.head = NewTail[]
+      self.head = NewTail
       self.length += 1
 
   def remove_from_tail(self):
+    if not self.tail:
+      return None
+
     value = self.tail.value
     if self.head == self.tail:
       self.head.delete()
@@ -99,31 +105,49 @@ class DoublyLinkedList:
 
   def move_to_front(self, node):
     # check and see if node is in the list
-    currentSelectedNode = self.head
-    while currentSelectedNode != None:
-      if currentSelectedNode == node:
-        currentSelectedNode.delete()
-        self.length -= 1 
-        self.add_to_head(node.value)
-        return self.head.value
-      else:
-        currentSelectedNode = currentSelectedNode.next
+    if self.head == node:
+      return node
+    
+    if self.tail == node:
+      self.remove_from_tail()
+    else:
+      node.delete() 
+      self.length -= 1
 
-    print("We cannot find this node")
+    self.add_to_head(node.value)
+
+
+    # while currentSelectedNode != None:
+    #   if currentSelectedNode == node:
+    #     currentSelectedNode.delete()
+    #     self.length -= 1 
+    #     self.add_to_head(node.value)
+    #     return self.head.value
+    #   else:
+    #     currentSelectedNode = currentSelectedNode.next
 
 
   def move_to_end(self, node):
-    currentSelectedNode = self.head
-    while currentSelectedNode != None:
-      if currentSelectedNode == node:
-        currentSelectedNode.delete()
-        self.length -= 1 
-        self.add_to_tail(node.value)
-        return self.tail.value
-      else:
-        currentSelectedNode = currentSelectedNode.next
 
-    print("We cannot find this node")
+    if self.tail == node:
+      return node
+    
+    if self.head == node:
+      self.remove_from_head()
+    else:
+      node.delete() 
+      self.length -= 1
+
+    self.add_to_tail(node.value)
+    # currentSelectedNode = self.head
+    # while currentSelectedNode != None:
+    #   if currentSelectedNode == node:
+    #     currentSelectedNode.delete()
+    #     self.length -= 1 
+    #     self.add_to_tail(node.value)
+    #     return self.tail.value
+    #   else:
+    #     currentSelectedNode = currentSelectedNode.next
 
   def delete(self, node):
     currentSelectedNode = self.head
