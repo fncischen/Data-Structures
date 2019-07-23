@@ -161,6 +161,12 @@ class DoublyLinkedList:
     while currentSelectedNode != None:
       if currentSelectedNode == node: 
         currentSelectedNode.delete()
+        if node == self.head:
+          next = self.head.next
+          self.head = next 
+        if node == self.tail:
+          previous = self.tail.prev
+          self.tail = previous
         self.length -= 1
         break 
       else:
