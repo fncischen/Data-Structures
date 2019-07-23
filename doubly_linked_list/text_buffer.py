@@ -1,4 +1,5 @@
 from doubly_linked_list import DoublyLinkedList 
+import inspect
 
 class TextBuffer:
     # init gives us the option to initialize some text in the
@@ -8,7 +9,8 @@ class TextBuffer:
         # check if an init string is provided
         # if so, put the contents of the init string in self.contents
         if init:
-            pass
+            for letter in init:
+                self.contents.add_to_tail(letter)
 
     def __str__(self):
         # needs to return a string to print 
@@ -20,18 +22,33 @@ class TextBuffer:
         return s
 
     def append(self, string_to_add):
-        pass
+        for letter in string_to_add:
+            self.contents.add_to_tail(letter)
     
     def prepend(self, string_to_add):
         # reverse the incoming string to maintain correct 
         # order when adding to the front of the text buffer 
-        pass
+        string_to_add = string_to_add[::-1]
+        for letter in string_to_add:
+            self.contents.add_to_head(letter)
+
 
     def delete_front(self, chars_to_remove):
-        pass
+        i = 0
+        currentNode = self.contents.head 
+        while i < chars_to_remove:
+            self.contents.delete(currentNode)
+            currentNode = currentNode.next 
+            i += 1 
+           
 
     def delete_back(self, chars_to_remove):
-        pass
+        i = 0
+        currentNode = self.contents.tail 
+        while i < chars_to_remove:
+            self.contents.delete(currentNode)
+            currentNode = currentNode.prev
+            i += 1
 
     """
     Join other_buffer to self
@@ -41,17 +58,22 @@ class TextBuffer:
     """
     def join(self, other_buffer):
         # we might want to check that other_buffer is indeed a text buffer 
+        if isinstance(other_buffer,TextBuffer):
+            self.contents.tail.next = other_buffer.contents.head
         # set self list tail's next node to be the head of the other buffer 
-        
+            other_buffer.contents.head.prev = self.contents.tail
         # set other_buffer head's prev node to be the tail of this buffer
-        
-        pass
-        
+            currentNode = other_buffer.contents.head
+            while currentNode:
+                self.append(currentNode.value)
+                currentNode = currentNode.next
     # if we get fed a string instead of a text buffer instance,
     # initialize a new text buffer with this string and then 
     # call the join method 
     def join_string(self, string_to_join):
-        pass
+        if type(string_to_join) == str:
+            newTextBuffer = TextBuffer(string_to_join)
+            self.join(newTextBuffer)
 
 if __name__ == '__main__':
     text = TextBuffer("Super")

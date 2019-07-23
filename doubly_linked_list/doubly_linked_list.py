@@ -60,10 +60,9 @@ class DoublyLinkedList:
     if not self.head:
       return None
 
-    value = self.head.value 
+    value = self.head.value
+    # intended value to return 
     if self.head == self.tail:
-      self.head.delete()
-      self.tail.delete()
       self.head = None
       self.tail = None 
       self.length -= 1 
@@ -193,8 +192,8 @@ e.add_to_tail(7)
 e.add_to_head(10)
 e.move_to_end(e.head.next)
 
-print(e.head.value)
-print(e.head.next.value)
-print(e.tail.value)
+# print(e.head.value)
+# print(e.head.next.value)
+# print(e.tail.value)
 
-print(e.length)
+# print(e.length)
