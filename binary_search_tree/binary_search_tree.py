@@ -22,7 +22,7 @@ class BinarySearchTree:
 
     # check if a right tree exist; if so, traverse from the top to the bottom
     # by accessign the right tree and searching for an empty tree
-      if self.right not None:
+      if self.right != None:
         self.right.insert(value)
       else:
     # if it does not exist, set the right tree equal to a new BST subtree with this value    
