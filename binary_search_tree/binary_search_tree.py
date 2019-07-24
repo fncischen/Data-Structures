@@ -1,3 +1,5 @@
+import random
+
 class BinarySearchTree:
   def __init__(self, value):
     self.value = value
@@ -32,26 +34,30 @@ class BinarySearchTree:
     # check for three conditions
 
     # check if the target equals self value
+    print("Our target:", target)
+    print("Our value", self.value)
     if target == self.value:  
-    # if so, return True
-      return True
-    
+        print("Yes it exists!")
+        return True
+    else: 
     # if not, check and see if the target is less than or equal to the target
-    if target < self.value:
-      # if so, search in the left subtree
-      if self.left != None:
-        self.left.contains(target)
-      # if the left subtree does not exist return False
+      if target < self.value:
+        # if so, search in the left subtree
+        if self.left != None:
+          return self.left.contains(target)
+        # if the left subtree does not exist return False
+        else:
+          print("It does not exist")
+          return False
+      
       else:
-        return False
-    
-    else:
-      # if not, search on the right subtree
-      if self.right != None:
-        self.right.contains(target)
-      # if the right subtree does not exist, return False 
-      else:
-        return False 
+        # if not, search on the right subtree
+        if self.right != None:
+          return self.right.contains(target)
+        # if the right subtree does not exist, return False 
+        else:
+          print("It does not exist")
+          return False 
 
   def get_max(self):
     # first set a max value // assume a sorted BST 
@@ -77,8 +83,15 @@ class BinarySearchTree:
     left = self.left 
     right = self.right 
     
+    print("What is root", root)
+    print(left)
+
     # set up an iterator of levels to loop through 
     levels = []
+    levels.append(left)
+    levels.append(right)
+
+
 
     # apply callback function to root
     cb(root) 
@@ -86,31 +99,65 @@ class BinarySearchTree:
     # assume no empty levels 
     noEmptyLevels = False 
 
-    while noEmptyLevels:
+    while not noEmptyLevels:
       noEmptyLevels = True 
-    
-    # add BST subtrees on the levels so that we can apply 
-      levels.append(left)
-      levels.append(right)
-    # the callback function on the values of each BST
+     
+    # apply the callback function on the values of each BST
 
       for level in levels:
-        cb(level.root)
-      
+          if level:
+            cb(level.value)
+        
     # replace the BST subtrees with new subtrees by looping through
     # the levels subtree
 
       oldlevels = levels
       levels = []
       for level in oldlevels:
-        levels.append(level.left)
-        levels.append(level.right)
+        if level: 
+          if level.left:
+            levels.append(level.left)
+          if level.right: 
+            levels.append(level.right)
       
     # what condition to check -? if ALL the level BST left and right are equal to None - let the while loop know
-      for level in levels:
-          if level != None:
-            noEmptyLevels = False
-            break 
+      if len(levels) > 0:
+        noEmptyLevels = False 
     
     # else: 
     # continue this sequence until the tree has no more roots to loop through
+
+bst = BinarySearchTree(5)
+# bst.insert(2)
+# bst.insert(3)
+# bst.insert(7)
+# bst.insert(6)
+# bst.insert(2)
+# bst.insert(3)
+# bst.insert(7)
+# print(bst.contains(7))
+# print(bst.contains(8))
+
+arr = []
+cb = lambda x: arr.append(x)
+
+v1 = random.randint(1, 101)
+v2 = random.randint(1, 101)
+v3 = random.randint(1, 101)
+v4 = random.randint(1, 101)
+v5 = random.randint(1, 101)
+
+print(v1)
+print(v2)
+
+bst.insert(v1)
+bst.insert(v2)
+bst.insert(v3)
+bst.insert(v4)
+bst.insert(v5)
+
+# print("Check", bst.contains(v1))
+
+bst.for_each(cb)
+
+print(arr)
