@@ -143,6 +143,8 @@ class Heap:
     return len(self.storage)
 
   def _bubble_up(self, index):
+    if len(self.storage) == 1:
+      return True 
     if self.storage[math.floor((index-1)/2)] < self.storage[index]:
       self.storage[index], self.storage[math.floor((index-1)/2)] = self.storage[math.floor((index-1)/2)], self.storage[index]
       print("Self storage", self.storage)
@@ -150,6 +152,8 @@ class Heap:
     else:
       return False 
   def _sift_down(self, index):
+    if len(self.storage) == 1:
+      return True 
     if self.storage[index] < self.storage[2*index+1]:
       self.storage[index], self.storage[2*index+1] = self.storage[2*index+1], self.storage[index]
       print("Self storage", self.storage)
@@ -164,7 +168,6 @@ class Heap:
 heap = Heap()
 
 heap.insert(6)
-heap.insert(10)
 print(heap._bubble_up(1))
 # heap.insert(8)
 # print(heap.storage)
