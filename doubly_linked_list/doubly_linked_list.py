@@ -44,25 +44,156 @@ class DoublyLinkedList:
     return self.length
 
   def add_to_head(self, value):
-    pass
+    if self.head != None and self.tail != None:
+      next = self.head
+      self.head.insert_before(value)
+      self.head = self.head.prev
+      self.head.next = next 
+      self.length += 1
+    else: 
+      NewNode = ListNode(value)
+      self.head = NewNode
+      self.tail = NewNode 
+      self.length += 1
 
   def remove_from_head(self):
-    pass
+    if not self.head:
+      return None
+
+    value = self.head.value
+    # intended value to return 
+    if self.head == self.tail:
+      self.head = None
+      self.tail = None 
+      self.length -= 1 
+      return value
+    else:
+      next = self.head.next 
+      self.head.delete()
+
+      #where my bug was // forgot to set a new head after an old head was removed.
+      self.head = next
+      self.length -= 1 
+      return value 
 
   def add_to_tail(self, value):
-    pass
+    if self.head != None and self.tail != None:
+      prev = self.tail 
+      self.tail.insert_after(value)
+      self.tail = self.tail.next
+      self.tail.prev = prev 
+      self.length += 1
+    else: 
+      NewTail = ListNode(value)
+      self.tail = NewTail
+      self.head = NewTail
+      self.length += 1
 
   def remove_from_tail(self):
-    pass
+    if not self.tail:
+      return None
+
+    value = self.tail.value
+    if self.head == self.tail:
+      self.head.delete()
+      self.tail.delete()
+      self.head = None
+      self.tail = None 
+      self.length -= 1 
+      return value
+    else:
+      tail = self.tail.prev 
+      self.tail.delete()
+      #where my bug was // forgot to set a new tail after an old tail was removed.
+      self.tail = tail 
+      self.length -= 1
+      return value
 
   def move_to_front(self, node):
-    pass
+    # check and see if node is in the list
+    if self.head == node:
+      return node
+    
+    if self.tail == node:
+      self.remove_from_tail()
+    else:
+      node.delete() 
+      self.length -= 1
+
+    self.add_to_head(node.value)
+
+
+    # while currentSelectedNode != None:
+    #   if currentSelectedNode == node:
+    #     currentSelectedNode.delete()
+    #     self.length -= 1 
+    #     self.add_to_head(node.value)
+    #     return self.head.value
+    #   else:
+    #     currentSelectedNode = currentSelectedNode.next
+
 
   def move_to_end(self, node):
-    pass
+
+    if self.tail == node:
+      return node
+    
+    if self.head == node:
+      self.remove_from_head()
+    else:
+      node.delete() 
+      self.length -= 1
+
+    self.add_to_tail(node.value)
+    # currentSelectedNode = self.head
+    # while currentSelectedNode != None:
+    #   if currentSelectedNode == node:
+    #     currentSelectedNode.delete()
+    #     self.length -= 1 
+    #     self.add_to_tail(node.value)
+    #     return self.tail.value
+    #   else:
+    #     currentSelectedNode = currentSelectedNode.next
 
   def delete(self, node):
-    pass
-    
+    currentSelectedNode = self.head
+    while currentSelectedNode != None:
+      if currentSelectedNode == node: 
+        currentSelectedNode.delete()
+        if node == self.head:
+          next = self.head.next
+          self.head = next 
+        if node == self.tail:
+          previous = self.tail.prev
+          self.tail = previous
+        self.length -= 1
+        break 
+      else:
+        currentSelectedNode = currentSelectedNode.next
+
+
   def get_max(self):
-    pass
+    max = self.head.value 
+    currentSelectedNode = self.head
+    while currentSelectedNode != None:
+      if currentSelectedNode.value > max:
+        max = currentSelectedNode.value 
+      else:
+        currentSelectedNode = currentSelectedNode.next
+
+    return max 
+
+# 10 5 7
+# 10 7 5
+
+g = ListNode(5)
+e = DoublyLinkedList(g)
+e.add_to_tail(7)
+e.add_to_head(10)
+e.move_to_end(e.head.next)
+
+# print(e.head.value)
+# print(e.head.next.value)
+# print(e.tail.value)
+
+# print(e.length)
