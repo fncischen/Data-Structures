@@ -37,61 +37,93 @@ class Heap:
           swapping = True
 
   def delete(self):
-    print("Before self storage", self.storage)
-    self.storage.pop(0)
+    # print("Before self storage", self.storage)
+    deleted = self.storage.pop(0)
     # next, compare the most bottom element to the former two children 
     # print("Self storage", self.storage)
-    # print(len(self.storage))
+    # print("Check", len(self.storage))
+    if len(self.storage) == 0:
+      return deleted
     lastItem = self.storage[len(self.storage)-1]
     # print("last item:", lastItem)
     self.storage.pop(len(self.storage)-1)
     self.storage.insert(0,lastItem)
-    # print("Self storage modifed", self.storage)
+    print("Self storage first", self.storage)
 
     # check if the bottom element is greater than the left child
     if len(self.storage) > 2:
       if self.storage[0] < self.storage[1]:
+        print("left delete")
         # if not, begin swapping WITH LEFT CHILD
         self.storage[0], self.storage[1] = self.storage[1], self.storage[0]
+        print("Self storage modifed", self.storage)
         swapping = True
         n = 1
-        while swapping & (2*n+1) > len(self.storage) - 1: 
+        while swapping & (2*n+1 < len(self.storage) - 2): 
           # check if the item at its new location is greater than its children
           # if it is not, continue swapping  
             print("We are at node", n)
             print("Check", self.storage)
             if self.storage[n] < self.storage[2*n+1]:
                 self.storage[n], self.storage[2*n+1] = self.storage[2*n+1], self.storage[n]
+                
+                # # check heap property 
+                if self.storage[n] < self.storage[2*n+2]:
+                    self.storage[n], self.storage[2*n+2] = self.storage[2*n+2], self.storage[n]
+                
                 n = 2*n + 1 
                 swapping = True 
+
             elif self.storage[n] < self.storage[2*n+2]:
                 self.storage[n], self.storage[2*n+2] = self.storage[2*n+2], self.storage[n]
+
+                # # check heap property
+                if self.storage[n] < self.storage[2*n+1]:
+                    self.storage[n], self.storage[2*n+1] = self.storage[2*n+1], self.storage[n]
+
                 n = 2*n + 2 
                 swapping = True 
             
+            # check if heap property holds:
+
             swapping = False 
  
       # check if the bottom element is greater than the right child
       elif self.storage[0] < self.storage[2]:
+        print("right delete")
         # if not, begin swapping WITH RIGHT CHILD
         self.storage[0], self.storage[2] = self.storage[2], self.storage[0]
         swapping = True
         n = 2
 
-        while swapping and (2*n+1) > len(self.storage) - 1: 
+        while swapping and 2*n+2 < len(self.storage) - 2: 
         # check if the item at its new location is greater than its children
           if self.storage[n] < self.storage[2*n+1]:
               self.storage[n], self.storage[2*n+1] = self.storage[2*n+1], self.storage[n]
+
+               # check heap property 
+              if self.storage[n] < self.storage[2*n+2]:
+                  self.storage[n], self.storage[2*n+2] = self.storage[2*n+2], self.storage[n]
+
               n = 2*n + 1 
               swapping = True 
           elif self.storage[n] < self.storage[2*n+2]:
               self.storage[n], self.storage[2*n+2] = self.storage[2*n+2], self.storage[n]
+
+              # check heap property
+              if self.storage[n] < self.storage[2*n+1]:
+                  self.storage[n], self.storage[2*n+1] = self.storage[2*n+1], self.storage[n]
+
               n = 2*n + 2 
               swapping = True 
+        
+
+
         # if it is not, continue swapping  
           swapping = False 
 
-      print("Final self storage", self.storage) 
+    print("Final deletion")
+    return deleted 
 
   def get_max(self):
     return self.storage[0]
@@ -108,7 +140,7 @@ class Heap:
     elif self.storage[index] < self.storage[2*index+2]:
       self.storage[index], self.storage[2*index+2] = self.storage[2*index+2], self.storage[index]
 
-# heap = Heap()
+heap = Heap()
 
 # heap.insert(6)
 # heap.insert(8)
@@ -124,3 +156,21 @@ class Heap:
 # heap.delete()
 # heap.delete()
 # print(heap.storage)
+
+heap.insert(6)
+heap.insert(7)
+heap.insert(5)
+heap.insert(8)
+heap.insert(10)
+heap.insert(1)
+heap.insert(2)
+heap.insert(5)
+
+print(heap.storage)
+
+descending_order = []
+
+while heap.get_size() > 0:
+    descending_order.append(heap.delete())
+    print("Heap storage remove", heap.storage)
+    print("current descending order", descending_order)
